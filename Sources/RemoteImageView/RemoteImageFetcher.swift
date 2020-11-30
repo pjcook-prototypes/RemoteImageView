@@ -8,7 +8,6 @@ public class RemoteImageFetcher: ObservableObject {
         self.url = url
     }
     
-    // 1
     public func fetch() {
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             guard let data = data else { return }
@@ -18,13 +17,15 @@ public class RemoteImageFetcher: ObservableObject {
         }.resume()
     }
     
-    // 2
     public func getImageData() -> Data {
         return imageData
     }
     
-    // 3
     public func getUrl() -> URL {
         return url
+    }
+    
+    public func purge() {
+        imageData = Data()
     }
 }

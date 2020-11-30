@@ -1,16 +1,13 @@
 import SwiftUI
 
 public struct RemoteImageView<Content: View>: View {
-    // 1
     @ObservedObject var imageFetcher: RemoteImageFetcher
     var content: (_ image: Image) -> Content
     let placeHolder: Image
     
-    // 2
     @State var previousURL: URL? = nil
     @State var imageData: Data = Data()
     
-    // 3
     public init(
         placeHolder: Image,
         imageFetcher: RemoteImageFetcher,
@@ -21,7 +18,6 @@ public struct RemoteImageView<Content: View>: View {
         self.content = content
     }
     
-    // 4
     public var body: some View {
         DispatchQueue.main.async {
             if (self.previousURL != self.imageFetcher.getUrl()) {
@@ -36,7 +32,6 @@ public struct RemoteImageView<Content: View>: View {
         let uiImage = imageData.isEmpty ? nil : UIImage(data: imageData)
         let image = uiImage != nil ? Image(uiImage: uiImage!) : nil;
         
-        // 5
         return ZStack() {
             if image != nil {
                 content(image!)
@@ -47,7 +42,6 @@ public struct RemoteImageView<Content: View>: View {
         .onAppear(perform: loadImage)
     }
     
-    // 6
     private func loadImage() {
         imageFetcher.fetch()
     }
